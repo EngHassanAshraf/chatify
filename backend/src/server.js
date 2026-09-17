@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 const __dirname = path.resolve();
 
+
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
