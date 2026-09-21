@@ -1,5 +1,6 @@
 import { createUser } from "../services/auth.service.js";
 import { generateToken } from "../lib/utils.js";
+import { resMessage } from "../lib/resMessage.js";
 
 export const signup = async (req, res) => {
 
@@ -7,15 +8,15 @@ export const signup = async (req, res) => {
 
     try {
         const user = await createUser({ fullname, email, password });
-        const token =  generateToken(user.id, res);
+        generateToken(user.id, res);
 
-        return res.status(201).json({ message: "User created successfully", token });
+        return resMessage(res, 201, { message: "User created successfully", user });
 
     } catch (error) {
         if (error.message === "Email already exists") {
-            return res.status(409).json({ message: "Email already exists" });
+            return resMessage(res, 409, {message:"Email already exists"})
         }
         console.error("Signup error", error);
-        return res.status(500).json({ message: "Internal Server Error" });
+        return resMessage(res, 500, {message:"Internal Server Error"})
     }
 }

@@ -2,12 +2,16 @@ import mongoose from 'mongoose';
 
 export const connectDB = async () => {
     try {
-        const conn = await mongoose.connect(process.env.MONGODB_URI, {
+        const {MONGODB_URI} = process.env
+        if (!MONGODB_URI) throw new Error("Mongo URI is not set ");
+        const conn = await mongoose.connect(MONGODB_URI, {
+            serverSelectionTimeoutMS:10000,
             dbName:"chatify_db"
         });
-        console.log('MongoDB connected successfully', conn.connection.host);
+        console.log('MongoDB connected successfully through host: ', conn.connection.host);
     } catch (error) {
-        console.error("Error connection to MongoDB:", error);
-        process.exit(1); // 1 status code means failure, 0 means success
+
+        console.error("Error connection to MongoDB: \n", error);
+        throw error;
     }
 }

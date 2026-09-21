@@ -19,7 +19,6 @@ export const createUser = async (userData) => {
         const username = generateUsername(email);
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // const user = new User({fullname, username, email, hashedPassword})
         const user = await User.create({ fullname, username, email, hashedPassword });
 
         return {

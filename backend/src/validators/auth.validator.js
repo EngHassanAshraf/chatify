@@ -5,18 +5,24 @@ const PASSWORD_REGEX =
 
 
 export const validatefullname = (fullname) => {
-    const name = fullname.trim();
-    return (
-        name.length >= 7 &&
-        name.length <= 50 &&
-        NAME_REGEX.test(name)
-    );
+    if (typeof fullname === "string") {
+        const name = fullname.trim();
+        return (
+            name.length >= 7 &&
+            name.length <= 50 &&
+            NAME_REGEX.test(name)
+        );
+    }
+    return false;
 }
 
 export const validateEmail = (email) => {
-    return EMAIL_REGEX.test(email.trim());
+    if (typeof email === "string") {
+        return EMAIL_REGEX.test(email.trim());
+    }
+    return false;
 }
 
 export const validatePassword = (password) => {
-    return PASSWORD_REGEX.test(password);
+    return typeof password === "string" && PASSWORD_REGEX.test(password);
 }
