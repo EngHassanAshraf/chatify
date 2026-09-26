@@ -1,10 +1,11 @@
 import mongoose from 'mongoose';
+import { env } from "../lib/env.js";
 
 export const connectDB = async () => {
     try {
-        const {MONGODB_URI} = process.env
-        if (!MONGODB_URI) throw new Error("Mongo URI is not set ");
-        const conn = await mongoose.connect(MONGODB_URI, {
+        const {monogoDBUri} = env
+        if (!monogoDBUri) throw new Error("Mongo URI is not set ");
+        const conn = await mongoose.connect(monogoDBUri, {
             serverSelectionTimeoutMS:10000,
             dbName:"chatify_db"
         });
