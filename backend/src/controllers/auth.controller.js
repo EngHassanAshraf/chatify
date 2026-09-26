@@ -12,7 +12,9 @@ export const signup = async (req, res) => {
     try {
         const user = await createUser({ fullname, email, password });
         generateToken(user.id, res);
-        await sendWelcomeEmail(user.email, user.fullname, clientURL);
+        sendWelcomeEmail(user.email, user.fullname, clientURL).catch((error)=>{
+            console.error("Failed to send welcome email: ",  error, "to user: ", user.email);
+        });
         return resMessage(res, 201, { message: "User created successfully", user });
     } catch (error) {
         if (error.message === "Email already exists") {

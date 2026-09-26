@@ -1,5 +1,11 @@
-export function createWelcomeEmailTemplate(name, clientURL) {
-    return `
+
+export const createWelcomeEmailTemplate = (name, clientURL) => {
+  const escapeHTML = (s) => {
+    String(s).replace(/[&<>"']/g, (c) => ({"&": "&amp;", "<":"&lt;", ">":"&gt;", "\"": "&quot;", "'":"&#39;", " ":"&nbsp;"}))
+  }
+  const safeName = escapeHTML(name);
+  const safeUrl = escapeHTML(clientURL);
+  return `
   <!DOCTYPE html>
   <html lang="en">
   <head>
@@ -13,7 +19,7 @@ export function createWelcomeEmailTemplate(name, clientURL) {
       <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 500;">Welcome to No Limits!</h1>
     </div>
     <div style="background-color: #ffffff; padding: 35px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-      <p style="font-size: 18px; color: #5B86E5;"><strong>Hello ${name},</strong></p>
+      <p style="font-size: 18px; color: #5B86E5;"><strong>Hello ${safeName},</strong></p>
       <p>We're excited to have you join our messaging platform! No Limits connects you with friends, family, and colleagues in real-time, no matter where they are.</p>
       
       <div style="background-color: #f8f9fa; padding: 25px; border-radius: 10px; margin: 25px 0; border-left: 4px solid #36D1DC;">
@@ -27,7 +33,7 @@ export function createWelcomeEmailTemplate(name, clientURL) {
       </div>
       
       <div style="text-align: center; margin: 30px 0;">
-        <a href=${clientURL} style="background: linear-gradient(to right, #36D1DC, #5B86E5); color: white; text-decoration: none; padding: 12px 30px; border-radius: 50px; font-weight: 500; display: inline-block;">Start With No Limits!</a>
+        <a href=${safeUrl} style="background: linear-gradient(to right, #36D1DC, #5B86E5); color: white; text-decoration: none; padding: 12px 30px; border-radius: 50px; font-weight: 500; display: inline-block;">Start With No Limits!</a>
       </div>
 
       <p style="margin-bottom: 5px;">If you need any help or have questions, we're always here to assist you.</p>
@@ -37,7 +43,7 @@ export function createWelcomeEmailTemplate(name, clientURL) {
     </div>
     
     <div style="text-align: center; padding: 20px; color: #999; font-size: 12px;">
-      <p>© 2025 Messenger. All rights reserved.</p>
+      <p>© ${new Date().getFullYear()} No Limits. All rights reserved.</p>
       <p>
         <a href="#" style="color: #5B86E5; text-decoration: none; margin: 0 10px;">Privacy Policy</a>
         <a href="#" style="color: #5B86E5; text-decoration: none; margin: 0 10px;">Terms of Service</a>
