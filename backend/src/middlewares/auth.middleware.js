@@ -26,3 +26,13 @@ export const validateSignup = (req, res, next) => {
 
     next();
 };
+
+export const validateLogin = (req, res, next) => {
+    const { email, password } = req.body;
+    // Check that all fields exist
+    if (!email || !password) return resMessage(res, 400, { message: "All fields are required" })
+
+    if (!validateEmail(email)) return resMessage(res, 400, { message: "Invalid email" })
+
+    next();
+};

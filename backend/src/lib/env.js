@@ -1,24 +1,20 @@
 import "dotenv/config";
 
+const required = (value, name) => {
+    if (!value) {
+        throw new Error(`Missing required environment variable: ${name}`);
+    }
+    return value;
+};
+
 export const env = Object.freeze({
     port: process.env.PORT,
     nodeENV: process.env.NODE_ENV,
-    monogoDBUri: process.env.MONGODB_URI,
-    jwtSecret: process.env.JWT_SECRET,
-    resendApi: process.env.RESEND_API,
-    fromEmail: process.env.EMAIL_FROM,
-    clientUrl: process.env.CLIENT_URL,
-    fromEmailName: process.env.EMAIL_FROM_NAME,
+    monogoDBUri: required(process.env.MONGODB_URI, "MONGODB_URI"),
+    jwtSecret: required(process.env.JWT_SECRET, "JWT_SECRET"),
+    resendApi: required(process.env.RESEND_API,"RESEND_API"),
+    fromEmail: required(process.env.EMAIL_FROM,"EMAIL_FROM"),
+    clientUrl: required(process.env.CLIENT_URL,"CLIENT_URL"),
+    fromEmailName: required(process.env.EMAIL_FROM_NAME,"EMAIL_FROM_NAME"),
+    dummyPasswordHash: required(process.env.DUMMY_PASSWORD_HASH, "DUMMY_PASSWORD_HASH"),
 });
-
-const productionRequired = [
-    "monogoDBUri",
-    "jwtSecret",
-    "resendApi",
-    "fromEmail",
-];
-
-if (env.nodeENV === "production") {
-    const missing = productionRequired.filter((key) => !env[key]);
-    if (missing.length) throw new Error(`Missing required environment variables: ${missing.join(", ")}`);
-}

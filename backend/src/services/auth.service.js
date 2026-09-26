@@ -9,26 +9,33 @@ const generateUsername = (email) => {
 
 export const createUser = async (userData) => {
 
-    try {
-        const { fullname, email, password } = userData;
+    const { fullname, email, password } = userData;
+    const existingUser = await User.findOne({ email });
 
-        const existingUser = await User.findOne({ email });
+    if (existingUser) return { success: false, error: "Email already exists!" };
 
-        if (existingUser) throw new Error("Email already exists");
+    const username = generateUsername(email);
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({ fullname, username, email, hashedPassword });
+    return { success: true, user };
 
-        const username = generateUsername(email);
-        const hashedPassword = await bcrypt.hash(password, 10);
 
-        const user = await User.create({ fullname, username, email, hashedPassword });
+}
 
-        return {
-            id: user._id,
-            fullname: user.fullname,
-            username: user.username,
-            email: user.email,
-        };
+export const loginService = async (email, password) => {
+    const normalizedEmail = email.trim().toLowerCase();
+    const user = await User.findOne({ normalizedEmail });
 
-    } catch (error) {
-        throw error;
+    if (!user) {
+        await bcrypt.compare(password, env.dummyPasswordHash);
+        return { success: false, error: "Invalid email or password" };
     }
+
+    const isPasswordValid = await user.matchPassword(password);
+    if (!isPasswordValid) return { success: false, error: "Invalid email or password" };
+
+    const newDate = new Date();
+    await user.updateOne({ $set: { last_login: newDate } });
+    user.last_login = newDate;
+    return { success: true, user };
 }
