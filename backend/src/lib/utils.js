@@ -31,8 +31,9 @@ export const generateAccessToken = (userId, res) => {
     const tokenOptions = { expiresIn: ACCESS_TOKEN_EXPIRES_IN, }
 
     const token = jwt.sign(payload, jwtSecret, tokenOptions)
-    res.cookie("jwt", token, ACCESS_COOKIE_OPTIONS);
+    res.cookie("accessToken", token, ACCESS_COOKIE_OPTIONS);
 }
+
 // TODO: generate a Public/Private key pairs using openssl and use them
 
 // const PRIVATE_KEY = env.jwtPrivateKey;
@@ -45,7 +46,7 @@ export const generateAccessToken = (userId, res) => {
 //         jwtSecret,
 //         tokenOptions
 //     )
-//     res.cookie("jwt", token, ACCESS_COOKIE_OPTIONS);
+//     res.cookie("accessToken", token, ACCESS_COOKIE_OPTIONS);
 // }
 
 
@@ -67,5 +68,5 @@ export const generateAccessToken = (userId, res) => {
 
 // export const generateRefreshToken = (userId, res) => {
 //     const token = jwt.sign({ userId }, jwtSecret, { expiresIn: REFRESH_TOKEN_EXPIRES_IN })
-//     res.cookie("jwt", token, REFRESH_COOKIE_OPTIONS);
+//     res.cookie("accessToken", token, REFRESH_COOKIE_OPTIONS);
 // }

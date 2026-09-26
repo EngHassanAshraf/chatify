@@ -1,5 +1,5 @@
 import { createUser, loginService } from "../services/auth.service.js";
-import { generateRefreshToken } from "../lib/utils.js";
+import { generateAccessToken } from "../lib/utils.js";
 import { resMessage } from "../lib/resMessage.js";
 import { sendWelcomeEmail } from "../emails/emailHandlers.js";
 import { env } from "../lib/env.js";
@@ -16,7 +16,7 @@ export const signup = async (req, res) => {
 
         const user = result.user.toJSON();
 
-        generateRefreshToken(user.id, res);
+        generateAccessToken(user.id, res);
 
         sendWelcomeEmail(user.email, user.fullname, clientURL).catch((error) => {
             console.error("Failed to send welcome email: ", error, "to user: ", user.email);
@@ -38,7 +38,7 @@ export const login = async (req, res) => {
         if (!result.success) return resMessage(res, 401, { message: result.error });
 
         const user = result.user.toJSON();
-        generateRefreshToken(user.id, res);
+        generateAccessToken(user.id, res);
 
         return resMessage(res, 200, user);
 
@@ -50,7 +50,7 @@ export const login = async (req, res) => {
 
 export const logout = (_, res) => {
     res.cookie(
-        "jwt",
+        "access",
         "",
         {
             httpOnly: true,
