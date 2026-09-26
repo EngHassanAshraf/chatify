@@ -50,7 +50,7 @@ export const login = async (req, res) => {
 
 export const logout = (_, res) => {
     res.cookie(
-        "access",
+        "accessToken",
         "",
         {
             httpOnly: true,

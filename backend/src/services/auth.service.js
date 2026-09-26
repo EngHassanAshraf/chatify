@@ -23,9 +23,8 @@ export const createUser = async (userData) => {
 }
 
 export const loginService = async (email, password) => {
-
-    const authErrorMessage = "Invalid email or password";
-    const user = await User.findOne({ email });
+    const normalizedEmail = email.trim().toLowerCase();
+    const user = await User.findOne({ normalizedEmail });
 
     if (!user) {
         await bcrypt.compare(password, env.dummyPasswordHash);
