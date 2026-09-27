@@ -35,6 +35,7 @@ export const login = async (req, res) => {
     try {
 
         const result = await loginService(email, password);
+        
         if (!result.success) return resMessage(res, 401, { message: result.error });
 
         const user = result.user.toJSON();

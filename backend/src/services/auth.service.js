@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import User from "../models/User.js";
-import {env} from "../lib/env.js";
+import { env } from "../lib/env.js";
 
 const generateUsername = (email) => {
     const baseUsername = email.split("@")[0];
@@ -25,8 +25,7 @@ export const createUser = async (userData) => {
 
 export const loginService = async (email, password) => {
     const normalizedEmail = email.trim().toLowerCase();
-    const user = await User.findOne({ normalizedEmail });
-
+    const user = await User.findOne({ email: normalizedEmail });
     if (!user) {
         await bcrypt.compare(password, env.dummyPasswordHash);
         return { success: false, error: "Invalid email or password" };
