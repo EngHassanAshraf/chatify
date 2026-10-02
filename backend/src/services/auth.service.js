@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import User from "../models/User.js";
-import { env } from "../lib/env.js";
+import env from "../lib/env.js";
 
 const generateUsername = (email) => {
     const baseUsername = email.split("@")[0];

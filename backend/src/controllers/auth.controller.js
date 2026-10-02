@@ -1,8 +1,8 @@
 import { createUser, loginService } from "../services/auth.service.js";
-import { generateAccessToken } from "../lib/utils.js";
+import { generateAccessToken } from "../lib/tokens.js";
 import { resMessage } from "../lib/resMessage.js";
 import { sendWelcomeEmail } from "../emails/emailHandlers.js";
-import { env } from "../lib/env.js";
+import env from "../lib/env.js";
 
 export const signup = async (req, res) => {
 
@@ -40,6 +40,7 @@ export const login = async (req, res) => {
 
         const user = result.user.toJSON();
         generateAccessToken(user.id, res);
+
 
         return resMessage(res, 200, user);
 
